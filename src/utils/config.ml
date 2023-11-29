@@ -64,7 +64,7 @@ let read_from_file file_path =
     else
       String_map.empty
   in
-    load_key_values file_text ;;
+    load_key_values (String.of_bytes file_text) ;;
 
 (* Command-line argument support. *)
 

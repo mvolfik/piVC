@@ -43,7 +43,7 @@ let parse_strings user_files =
     in
       List.map convert_line_endings_of_elem files
   in
-  let all_files = entries_with_length_ge_0 (convert_line_endings (("includes",includes_string) :: user_files)) in
+  let all_files = entries_with_length_ge_0 (convert_line_endings (("includes",String.of_bytes includes_string) :: user_files)) in
   let all_strings_concatenated elems =
     let fold_fn prev_str cur_elem =
       prev_str ^ snd cur_elem

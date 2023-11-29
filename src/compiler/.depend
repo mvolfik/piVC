@@ -1,54 +1,172 @@
-ast_utils.cmi: ../language/ast.cmi 
-basic_paths.cmi: ../language/ast.cmi 
-compile.cmi: semantic_checking.cmi ../language/ast.cmi 
-expr_utils.cmi: ../language/ast.cmi 
-semantic_checking.cmi: ../language/scope_stack.cmi ../language/ast.cmi 
-smt_solver.cmi: ../language/ast.cmi 
-termination.cmi: ../language/ast.cmi 
-verification_conditions.cmi: basic_paths.cmi ../language/ast.cmi 
-verify.cmi: ../utils/utils.cmi smt_solver.cmi semantic_checking.cmi \
-    basic_paths.cmi ../language/ast.cmi 
-ast_utils.cmo: ../utils/utils.cmi expr_utils.cmi ../language/ast.cmi \
-    ast_utils.cmi 
-ast_utils.cmx: ../utils/utils.cmx expr_utils.cmx ../language/ast.cmx \
-    ast_utils.cmi 
-basic_paths.cmo: ../utils/utils.cmi expr_utils.cmi ../utils/exceptions.cmi \
-    ast_utils.cmi ../language/ast.cmi basic_paths.cmi 
-basic_paths.cmx: ../utils/utils.cmx expr_utils.cmx ../utils/exceptions.cmx \
-    ast_utils.cmx ../language/ast.cmx basic_paths.cmi 
-compile.cmo: ../utils/utils.cmi semantic_checking.cmi ../language/parser.cmi \
-    ../language/lexer.cmi ../utils/config.cmi ../language/ast.cmi compile.cmi 
-compile.cmx: ../utils/utils.cmx semantic_checking.cmx ../language/parser.cmx \
-    ../language/lexer.cmx ../utils/config.cmx ../language/ast.cmx compile.cmi 
-expr_utils.cmo: ../language/ast.cmi expr_utils.cmi 
-expr_utils.cmx: ../language/ast.cmx expr_utils.cmi 
-semantic_checking.cmo: ../utils/utils.cmi ../language/scope_stack.cmi \
-    ast_utils.cmi ../language/ast.cmi semantic_checking.cmi 
-semantic_checking.cmx: ../utils/utils.cmx ../language/scope_stack.cmx \
-    ast_utils.cmx ../language/ast.cmx semantic_checking.cmi 
-smt_solver.cmo: ../utils/utils.cmi ../utils/scanner.cmi ../utils/config.cmi \
-    ../language/ast.cmi smt_solver.cmi 
-smt_solver.cmx: ../utils/utils.cmx ../utils/scanner.cmx ../utils/config.cmx \
-    ../language/ast.cmx smt_solver.cmi 
-termination.cmo: verification_conditions.cmi ../utils/utils.cmi \
-    ../language/ast.cmi termination.cmi 
-termination.cmx: verification_conditions.cmx ../utils/utils.cmx \
-    ../language/ast.cmx termination.cmi 
-test_parser.cmo: verify.cmi verification_conditions.cmi ../utils/utils.cmi \
-    semantic_checking.cmi ../utils/constants.cmi ../utils/config.cmi \
-    compile.cmi basic_paths.cmi ../language/ast.cmi test_parser.cmi 
-test_parser.cmx: verify.cmx verification_conditions.cmx ../utils/utils.cmx \
-    semantic_checking.cmx ../utils/constants.cmx ../utils/config.cmx \
-    compile.cmx basic_paths.cmx ../language/ast.cmx test_parser.cmi 
-verification_conditions.cmo: ../utils/utils.cmi expr_utils.cmi \
-    basic_paths.cmi ../language/ast.cmi verification_conditions.cmi 
-verification_conditions.cmx: ../utils/utils.cmx expr_utils.cmx \
-    basic_paths.cmx ../language/ast.cmx verification_conditions.cmi 
-verify.cmo: verification_conditions.cmi ../utils/utils.cmi termination.cmi \
-    smt_solver.cmi semantic_checking.cmi ../language/parser.cmi \
-    ../utils/net_utils.cmi expr_utils.cmi ../utils/config.cmi basic_paths.cmi \
-    ../utils/background.cmi ast_utils.cmi ../language/ast.cmi verify.cmi 
-verify.cmx: verification_conditions.cmx ../utils/utils.cmx termination.cmx \
-    smt_solver.cmx semantic_checking.cmx ../language/parser.cmx \
-    ../utils/net_utils.cmx expr_utils.cmx ../utils/config.cmx basic_paths.cmx \
-    ../utils/background.cmx ast_utils.cmx ../language/ast.cmx verify.cmi 
+ast_utils.cmo : \
+    ../utils/utils.cmi \
+    expr_utils.cmi \
+    ../language/ast.cmi \
+    ast_utils.cmi
+ast_utils.cmx : \
+    ../utils/utils.cmx \
+    expr_utils.cmx \
+    ../language/ast.cmx \
+    ast_utils.cmi
+ast_utils.cmi : \
+    ../language/ast.cmi
+basic_paths.cmo : \
+    ../utils/utils.cmi \
+    expr_utils.cmi \
+    ../utils/exceptions.cmi \
+    ast_utils.cmi \
+    ../language/ast.cmi \
+    basic_paths.cmi
+basic_paths.cmx : \
+    ../utils/utils.cmx \
+    expr_utils.cmx \
+    ../utils/exceptions.cmx \
+    ast_utils.cmx \
+    ../language/ast.cmx \
+    basic_paths.cmi
+basic_paths.cmi : \
+    ../language/ast.cmi
+compile.cmo : \
+    ../utils/utils.cmi \
+    semantic_checking.cmi \
+    ../language/parser.cmo \
+    ../language/lexer.cmi \
+    ../utils/config.cmi \
+    ../language/ast.cmi \
+    compile.cmi
+compile.cmx : \
+    ../utils/utils.cmx \
+    semantic_checking.cmx \
+    ../language/parser.cmx \
+    ../language/lexer.cmx \
+    ../utils/config.cmx \
+    ../language/ast.cmx \
+    compile.cmi
+compile.cmi : \
+    semantic_checking.cmi \
+    ../language/ast.cmi
+expr_utils.cmo : \
+    ../language/ast.cmi \
+    expr_utils.cmi
+expr_utils.cmx : \
+    ../language/ast.cmx \
+    expr_utils.cmi
+expr_utils.cmi : \
+    ../language/ast.cmi
+semantic_checking.cmo : \
+    ../utils/utils.cmi \
+    ../language/scope_stack.cmi \
+    expr_utils.cmi \
+    ast_utils.cmi \
+    ../language/ast.cmi \
+    semantic_checking.cmi
+semantic_checking.cmx : \
+    ../utils/utils.cmx \
+    ../language/scope_stack.cmx \
+    expr_utils.cmx \
+    ast_utils.cmx \
+    ../language/ast.cmx \
+    semantic_checking.cmi
+semantic_checking.cmi : \
+    ../language/scope_stack.cmi \
+    ../language/ast.cmi
+smt_solver.cmo : \
+    ../utils/utils.cmi \
+    ../utils/scanner.cmi \
+    ../utils/config.cmi \
+    ../language/ast.cmi \
+    smt_solver.cmi
+smt_solver.cmx : \
+    ../utils/utils.cmx \
+    ../utils/scanner.cmx \
+    ../utils/config.cmx \
+    ../language/ast.cmx \
+    smt_solver.cmi
+smt_solver.cmi : \
+    ../language/ast.cmi
+termination.cmo : \
+    verification_conditions.cmi \
+    ../utils/utils.cmi \
+    ../language/ast.cmi \
+    termination.cmi
+termination.cmx : \
+    verification_conditions.cmx \
+    ../utils/utils.cmx \
+    ../language/ast.cmx \
+    termination.cmi
+termination.cmi : \
+    ../language/ast.cmi
+test_parser.cmo : \
+    verify.cmi \
+    verification_conditions.cmi \
+    ../utils/utils.cmi \
+    semantic_checking.cmi \
+    ../utils/constants.cmi \
+    ../utils/config.cmi \
+    compile.cmi \
+    basic_paths.cmi \
+    ../language/ast.cmi \
+    test_parser.cmi
+test_parser.cmx : \
+    verify.cmx \
+    verification_conditions.cmx \
+    ../utils/utils.cmx \
+    semantic_checking.cmx \
+    ../utils/constants.cmx \
+    ../utils/config.cmx \
+    compile.cmx \
+    basic_paths.cmx \
+    ../language/ast.cmx \
+    test_parser.cmi
+test_parser.cmi :
+verification_conditions.cmo : \
+    ../utils/utils.cmi \
+    expr_utils.cmi \
+    basic_paths.cmi \
+    ../language/ast.cmi \
+    verification_conditions.cmi
+verification_conditions.cmx : \
+    ../utils/utils.cmx \
+    expr_utils.cmx \
+    basic_paths.cmx \
+    ../language/ast.cmx \
+    verification_conditions.cmi
+verification_conditions.cmi : \
+    basic_paths.cmi \
+    ../language/ast.cmi
+verify.cmo : \
+    verification_conditions.cmi \
+    ../utils/utils.cmi \
+    termination.cmi \
+    smt_solver.cmi \
+    semantic_checking.cmi \
+    ../language/parser.cmo \
+    ../utils/net_utils.cmi \
+    expr_utils.cmi \
+    ../utils/config.cmi \
+    basic_paths.cmi \
+    ../utils/background.cmi \
+    ast_utils.cmi \
+    ../language/ast.cmi \
+    verify.cmi
+verify.cmx : \
+    verification_conditions.cmx \
+    ../utils/utils.cmx \
+    termination.cmx \
+    smt_solver.cmx \
+    semantic_checking.cmx \
+    ../language/parser.cmx \
+    ../utils/net_utils.cmx \
+    expr_utils.cmx \
+    ../utils/config.cmx \
+    basic_paths.cmx \
+    ../utils/background.cmx \
+    ast_utils.cmx \
+    ../language/ast.cmx \
+    verify.cmi
+verify.cmi : \
+    ../utils/utils.cmi \
+    smt_solver.cmi \
+    semantic_checking.cmi \
+    basic_paths.cmi \
+    ../language/ast.cmi

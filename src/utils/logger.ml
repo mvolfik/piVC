@@ -74,7 +74,7 @@ let log msg filename =
     let log_file = Unix.openfile filename [Unix.O_CREAT; Unix.O_WRONLY; Unix.O_APPEND] 0o640 in
     let write_to_log fd str =
       let full_str = get_time_str () ^ " " ^ get_server_type_str () ^ ": " ^ str ^ "\n" in
-      ignore (Unix.write fd full_str 0 (String.length full_str))
+      ignore (Unix.write fd (String.to_bytes full_str) 0 (String.length full_str))
     in
     write_to_log log_file msg;
     Unix.close log_file;

@@ -71,7 +71,7 @@ let write_to_file msg base_filename =
   if Sys.file_exists filename then
     failwith ("File " ^ filename ^ " used to communicate with the SMT solver already exists.");
   let fd = Unix.openfile filename [Unix.O_WRONLY; Unix.O_CREAT] 0o644 in
-  ignore (Unix.write fd msg 0 (String.length msg));
+  ignore (Unix.write fd (String.to_bytes msg) 0 (String.length msg));
   Unix.close fd
 
 let send m msg =

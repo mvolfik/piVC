@@ -1,18 +1,49 @@
-background.cmo: background.cmi 
-background.cmx: background.cmi 
-config.cmo: utils.cmi config.cmi 
-config.cmx: utils.cmx config.cmi 
-constants.cmo: constants.cmi 
-constants.cmx: constants.cmi 
-exceptions.cmo: exceptions.cmi 
-exceptions.cmx: exceptions.cmi 
-logger.cmo: config.cmi logger.cmi 
-logger.cmx: config.cmx logger.cmi 
-net_utils.cmo: net_utils.cmi 
-net_utils.cmx: net_utils.cmi 
-scanner.cmo: scanner.cmi 
-scanner.cmx: scanner.cmi 
-semaphore.cmo: semaphore.cmi 
-semaphore.cmx: semaphore.cmi 
-utils.cmo: utils.cmi 
-utils.cmx: utils.cmi 
+background.cmo : \
+    background.cmi
+background.cmx : \
+    background.cmi
+background.cmi :
+config.cmo : \
+    utils.cmi \
+    config.cmi
+config.cmx : \
+    utils.cmx \
+    config.cmi
+config.cmi :
+constants.cmo : \
+    constants.cmi
+constants.cmx : \
+    constants.cmi
+constants.cmi :
+exceptions.cmo : \
+    exceptions.cmi
+exceptions.cmx : \
+    exceptions.cmi
+exceptions.cmi :
+logger.cmo : \
+    config.cmi \
+    logger.cmi
+logger.cmx : \
+    config.cmx \
+    logger.cmi
+logger.cmi :
+net_utils.cmo : \
+    net_utils.cmi
+net_utils.cmx : \
+    net_utils.cmi
+net_utils.cmi :
+scanner.cmo : \
+    scanner.cmi
+scanner.cmx : \
+    scanner.cmi
+scanner.cmi :
+semaphore.cmo : \
+    semaphore.cmi
+semaphore.cmx : \
+    semaphore.cmi
+semaphore.cmi :
+utils.cmo : \
+    utils.cmi
+utils.cmx : \
+    utils.cmi
+utils.cmi :
