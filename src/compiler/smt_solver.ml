@@ -347,18 +347,18 @@ let parse_smt_lib2_counterexample str rev_var_names =
         let _ = Str.search_forward regex rhs 0 in
         let default_value = Str.matched_group 1 rhs in
         let default_lhs = Counterexample.ArrayVar (lhs, "*") in
-        let regex = Str.regexp "\\([0-9]+\\) \\([0-9]+\\))" in
+        let regex = Str.regexp ") \\([0-9]+\\) \\([0-9]+\\))" in
         let rec results_gen start_index =
-          match (try Some (Str.search_forward regex rhs start_index) with Not_found -> None) with
-          | None -> [(default_lhs, default_value)]
-          | Some index ->
-            let index = Str.match_end() in
+          if (Str.string_match regex rhs (start_index - 1)) then
+            let index = Str.match_end () in
             let array_index = Str.matched_group 1 rhs in
             let value = Str.matched_group 2 rhs in
             let new_lhs = Counterexample.ArrayVar (lhs, array_index) in
             (new_lhs, value) :: (results_gen index)
+          else
+            [(default_lhs, default_value)]
         in
-        results_gen 0
+        results_gen (Str.match_end ())
       else
         [(lhs, Str.global_replace (Str.regexp "[()]") "" rhs)]
     in
