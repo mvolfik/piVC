@@ -335,9 +335,6 @@ let parse_smt_lib2_counterexample str rev_var_names =
     (* Parse one line. *)
     (* TODO: This parsing code is ugly, since I have to special case parentheses due to using regexes. *)
     let parse_smt_lib2_example s =
-      (* print_string "Part: ";
-      print_string s;
-      print_string "\n---\n"; *)
       let cleaned_str = Str.global_replace (Str.regexp "\n") "" s in
       let regex = Str.regexp "^ *(define-fun \\([^ ]*\\) (\\((?[^)]*)?\\)) \\([^ ][^0-9(]*\\)\\(.*\\))$" in
       assert (Str.string_match regex cleaned_str 0);
@@ -346,9 +343,6 @@ let parse_smt_lib2_counterexample str rev_var_names =
       let lhs = Counterexample.Var (replace_name lhs_token, Hashtbl.find rev_var_names lhs_token) in
       let rhs = Str.matched_group 4 cleaned_str in
       if (String.starts_with ~prefix:"(Array" typ) then
-        (* let () = print_string "Array: '" in
-        let () = print_string rhs in
-        let () = print_string "'\n" in  *)
         let regex = Str.regexp "((as const (Array Int Int)) \\([0-9]+\\))" in
         let _ = Str.search_forward regex rhs 0 in
         let default_value = Str.matched_group 1 rhs in
