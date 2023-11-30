@@ -332,59 +332,48 @@ let parse_smt_lib2_counterexample str rev_var_names =
       else
 	n
     in
-    let array_names = Hashtbl.create 10 in
     (* Parse one line. *)
     (* TODO: This parsing code is ugly, since I have to special case parentheses due to using regexes. *)
     let parse_smt_lib2_example s =
-      let rec parse_array arr_var str =
-        let trimmed_str = String.trim str in
-        if (String.length trimmed_str < 4) || (String.sub trimmed_str 0 4) <> "(ite" then (* Simple value at the end *)
-          [(Counterexample.ArrayVar (arr_var, "*"), Str.global_replace (Str.regexp "[()]") "" trimmed_str)]
-        else begin (* Array *)
-            let (cur_arr_index, second_half) =
-              if (Str.string_match (Str.regexp "(ite (= [^ ]* (\\([^)]*\\))) \\(.*\\))$") trimmed_str 0) then
-                (Str.matched_group 1 trimmed_str, Str.matched_group 2 trimmed_str)
-              else if (Str.string_match (Str.regexp "(ite (= [^ ]* \\([^)]*\\)) \\(.*\\))$") trimmed_str 0) then
-                (Str.matched_group 1 trimmed_str, Str.matched_group 2 trimmed_str)
-              else
-                assert(false)
-            in
-            let (cur_arr_rhs, rest) = 
-              if (Str.string_match (Str.regexp "(\\([^)]*\\)) *\\(.*\\)") second_half 0) then
-                (Str.matched_group 1 second_half, Str.matched_group 2 second_half)
-              else if (Str.string_match (Str.regexp "\\([^ ]*\\) \\(.*\\)") second_half 0) then
-                (Str.matched_group 1 second_half, Str.matched_group 2 second_half)
-              else
-                assert(false)
-            in
-            (Counterexample.ArrayVar (arr_var, cur_arr_index), cur_arr_rhs) :: (parse_array arr_var rest)
-          end
-      in
+      (* print_string "Part: ";
+      print_string s;
+      print_string "\n---\n"; *)
       let cleaned_str = Str.global_replace (Str.regexp "\n") "" s in
-      let regex = Str.regexp "^ *(define-fun \\([^ ]*\\) (\\((?[^)]*)?\\)) [^ ][^0-9(]*\\(.*\\))$" in
+      let regex = Str.regexp "^ *(define-fun \\([^ ]*\\) (\\((?[^)]*)?\\)) \\([^ ][^0-9(]*\\)\\(.*\\))$" in
       assert (Str.string_match regex cleaned_str 0);
       let lhs_token = Str.matched_group 1 cleaned_str in
-      let array_name = Str.matched_group 2 cleaned_str in
-      let rhs = Str.matched_group 3 cleaned_str in
-      if (Str.string_match (Str.regexp "(_ as-array \\([^)]*\\)") rhs 0) then begin (* Remember SMTLIB2's internal array names. *)
-          Hashtbl.add array_names (Str.matched_group 1 rhs) lhs_token;
-          []
-        end
-      else if array_name <> "" then begin (* Array *)
-          let cur_arr_name = Hashtbl.find array_names lhs_token in
-	  let inner_var = Counterexample.Var (replace_name cur_arr_name, Hashtbl.find rev_var_names cur_arr_name) in
-          parse_array inner_var rhs
-        end
-      else (* Normal value. *)
-	let lhs = Counterexample.Var (replace_name lhs_token, Hashtbl.find rev_var_names lhs_token) in
-	[(lhs, Str.global_replace (Str.regexp "[()]") "" rhs)]
+      let typ = Str.matched_group 3 cleaned_str in
+      let lhs = Counterexample.Var (replace_name lhs_token, Hashtbl.find rev_var_names lhs_token) in
+      let rhs = Str.matched_group 4 cleaned_str in
+      if (String.starts_with ~prefix:"(Array" typ) then
+        (* let () = print_string "Array: '" in
+        let () = print_string rhs in
+        let () = print_string "'\n" in  *)
+        let regex = Str.regexp "((as const (Array Int Int)) \\([0-9]+\\))" in
+        let _ = Str.search_forward regex rhs 0 in
+        let default_value = Str.matched_group 1 rhs in
+        let default_lhs = Counterexample.ArrayVar (lhs, "*") in
+        let regex = Str.regexp "\\([0-9]+\\) \\([0-9]+\\))" in
+        let rec results_gen start_index =
+          match (try Some (Str.search_forward regex rhs start_index) with Not_found -> None) with
+          | None -> [(default_lhs, default_value)]
+          | Some index ->
+            let index = Str.match_end() in
+            let array_index = Str.matched_group 1 rhs in
+            let value = Str.matched_group 2 rhs in
+            let new_lhs = Counterexample.ArrayVar (lhs, array_index) in
+            (new_lhs, value) :: (results_gen index)
+        in
+        results_gen 0
+      else
+        [(lhs, Str.global_replace (Str.regexp "[()]") "" rhs)]
     in
     List.flatten (List.map parse_smt_lib2_example parts)
   in
   (*print_endline (Hashtbl.fold (fun k v acc -> acc ^ (if acc = "" then "" else ", ") ^ k ^ " -> " ^ (string_of_identifier v)) rev_var_names "");*)
-  let model_start = Str.search_forward (Str.regexp "(model") str 0 in
+  let model_start = Str.search_forward (Str.regexp "(") str 0 in
   let model_end = String.rindex str ')' in
-  let short_str = String.trim (String.sub str (model_start + 6) (model_end - (model_start + 6))) in
+  let short_str = String.trim (String.sub str (model_start + 1) (model_end - (model_start + 1))) in
   let parts = split_counterexample short_str in
   let data = parse_smt_lib2_counterexample parts in
   sort_counterexamples data ;;
