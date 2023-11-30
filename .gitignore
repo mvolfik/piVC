@@ -1,0 +1,5 @@
+bin
+src/**/*.annot
+src/**/*.cmi
+src/**/*.cmo
+log
