@@ -181,19 +181,6 @@ public class PiMenu extends JMenuBar implements DirtyChangedListener {
 		});
 		cancelCompileMenuItem.setEnabled(false);
 		actionsMenu.add(cancelCompileMenuItem);
-		
-		actionsMenu.addSeparator();
-		
-		submit = new JMenuItem("Submit");
-		submit.setMnemonic(KeyEvent.VK_S);
-		submit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.CTRL_MASK));
-		submit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				piGui.doSubmit();
-			}
-		});
-		actionsMenu.add(submit);	
-				
 		add(actionsMenu);
 	}
 	

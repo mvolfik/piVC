@@ -852,17 +852,6 @@ public class PiGui extends JFrame {
 		box.add(compileButton);
 		
 		box.add(Box.createHorizontalStrut(20));
-		
-		submitButton = new JButton("Submit");
-		submitButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				doSubmit();
-			}
-		});
-		//submitButton.setEnabled(false);
-		box.add(submitButton);		
-		
-
 		box.add(Box.createHorizontalStrut(20));
 		
 		/*
