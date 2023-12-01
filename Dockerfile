@@ -7,3 +7,4 @@ COPY src src
 RUN cd src && make
 COPY conf conf
 COPY include include
+RUN mkdir log
