@@ -32,7 +32,7 @@ public class PiTokenMarker extends CTokenMarker
 			piKeywords = new KeywordMap(false);
 			piKeywords.add("int",Token.KEYWORD3);
 			piKeywords.add("float",Token.KEYWORD3);
-			piKeywords.add("boolean",Token.KEYWORD3);
+			piKeywords.add("bool",Token.KEYWORD3);
 			piKeywords.add("void",Token.KEYWORD3);
 			piKeywords.add("class",Token.KEYWORD3);
 			piKeywords.add("break",Token.KEYWORD1);
