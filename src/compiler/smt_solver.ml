@@ -343,24 +343,24 @@ let parse_smt_lib2_counterexample str rev_var_names =
       let lhs = Counterexample.Var (replace_name lhs_token, Hashtbl.find rev_var_names lhs_token) in
       let rhs = Str.matched_group 4 cleaned_str in
       if (String.starts_with ~prefix:"(Array" typ) then
-        let regex = Str.regexp "((as const (Array Int Int)) \\([0-9]+\\))" in
+        let regex = Str.regexp "((as const (Array Int Int)) \\([0-9]+\\|(- [0-9]+)\\))" in
         let _ = Str.search_forward regex rhs 0 in
         let default_value = Str.matched_group 1 rhs in
         let default_lhs = Counterexample.ArrayVar (lhs, "*") in
-        let regex = Str.regexp ") \\([0-9]+\\) \\([0-9]+\\))" in
+        let regex = Str.regexp ") \\([0-9]+|(- [0-9]+)\\) \\([0-9]+\\|(- [0-9]+)\\))" in
         let rec results_gen start_index =
           if (Str.string_match regex rhs (start_index - 1)) then
             let index = Str.match_end () in
             let array_index = Str.matched_group 1 rhs in
             let value = Str.matched_group 2 rhs in
             let new_lhs = Counterexample.ArrayVar (lhs, array_index) in
-            (new_lhs, value) :: (results_gen index)
+            (new_lhs, Str.global_replace (Str.regexp "[() ]") "" value) :: (results_gen index)
           else
-            [(default_lhs, default_value)]
+            [(default_lhs, Str.global_replace (Str.regexp "[() ]") "" default_value)]
         in
         results_gen (Str.match_end ())
       else
-        [(lhs, Str.global_replace (Str.regexp "[()]") "" rhs)]
+        [(lhs, Str.global_replace (Str.regexp "[() ]") "" rhs)]
     in
     List.flatten (List.map parse_smt_lib2_example parts)
   in
